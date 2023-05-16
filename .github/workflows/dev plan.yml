@@ -1,5 +1,11 @@
-name: 'hello world infra - dev plan'
-on : pull_request #Triggers when pr is made. Main branch protected, need to create pr to the main branch. 
+name: 'infra - dev plan'
+on : 
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: git branch to plan
+        required: true
+#on : pull_request #Triggers when pr is made. Main branch protected, need to create pr to the main branch. 
 
 jobs: 
   terraform:
