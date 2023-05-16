@@ -1,0 +1,45 @@
+name: 'infra - dev apply'
+on : 
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: git branch to deploy
+        required: true
+        # apply action needs to be manually triggered
+        # this can be used as a checkpoint for testing the code 
+        # by  viewing the planned infra. 
+
+jobs: 
+  terraform:
+    name: Apply
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout-branch
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.inputs.branch }}
+      
+      - name: Terraform setup
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.2.4
+
+
+      - name: Terraform init
+        id: init
+        run: terraform init
+        env:
+          TF_WORKSPACE: "dev"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_DEV_ACCESS_KEY_ID }} #stored in github secrets
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_DEV_SECRET_ACCESS_KEY }} #stored in github secrets
+        working-directory: .
+
+      - name: Terraform apply
+        id: plan
+        run: terraform apply -var-file="./environments/dev.tfvars" -auto-approve
+        env:
+          TF_WORKSPACE: "dev"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_DEV_ACCESS_KEY_ID }} #stored in github secrets
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_DEV_SECRET_ACCESS_KEY }} #stored in github secrets
+        working-directory: .       
