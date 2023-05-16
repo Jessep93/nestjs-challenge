@@ -27,10 +27,12 @@ This name can be changed in the _variable.tf.
     - terraform apply -var-file="./environments/dev.tfvars" -lock=false
 any env.tfvars file can be selected to choose which environment you want the infrastructure to be deployed in (only dev values have been set for now)
 
-Method 2: Github actions [currently not working] 
+Method 2: Github actions [NOT RECOMMENDED] 
 1) Setup AWS_ACCESS_KEY and AWS_SECRET_ACCESS_KEY in the github actions secrets 
 2) Everytime new pr is created, terraform plan is automatically triggered in the github actions - main branch should be protected in real scenario. 
 3) Once Terraform plan is finished, you can view the changes and run the APPLY actions to apply the changes (can make this process automatic if needed)
+
+THIS IS NOT RECOMMENDED SINCE TF STATE IS NOT BEING STORED - WIP 
 
 # How to improve further 
 
