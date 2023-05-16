@@ -37,7 +37,7 @@ jobs:
 
       - name: Terraform plan
         id: plan
-        run: terraform plan -var-file="./environments/dev.tfvars" -lock=false
+        run: terraform plan -var-file="environments/dev.tfvars" -lock=false
         env:
           TF_WORKSPACE: "dev"
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_DEV_ACCESS_KEY_ID }} #stored in github secrets
