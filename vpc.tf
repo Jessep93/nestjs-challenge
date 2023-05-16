@@ -13,16 +13,16 @@ resource "aws_vpc" "main_vpc" {
 
 resource "aws_eip" "nat" {
   vpc = true
-  tags = merge(local.tags_common, {
+  tags = merge(local.tags, {
     Name = "${local.name_prefix}-elastic_ip"
   })
 }
 
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.nat.id
+  subnet_id     = aws_subnet.app.id
 
-  tags = merge(local.tags_common, {
+  tags = merge(local.tags, {
     Name = "${local.name_prefix}-nat_gateway"
   })
 }
@@ -32,7 +32,7 @@ resource "aws_nat_gateway" "nat" {
 resource "aws_internet_gateway" "public" {
   vpc_id = aws_vpc.main_vpc.id
 
-  tags = merge(local.tags_common, {
+  tags = merge(local.tags, {
     Name = "${local.name_prefix}-public_igw"
   })
 }

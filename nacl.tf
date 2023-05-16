@@ -9,7 +9,7 @@ resource "aws_network_acl" "public" {
     protocol   = -1
     rule_no    = 100
     action     = "allow"
-    cidr_block = aws_vpc.vpc.cidr_block
+    cidr_block = aws_vpc.main_vpc.cidr_block
     from_port  = 0
     to_port    = 0
   }
@@ -64,7 +64,7 @@ resource "aws_network_acl" "public" {
     to_port    = 0
   }
 
-  tags = merge(local.tags_common, {
+  tags = merge(local.tags, {
     Name = "${local.name_prefix}-public-nacl"
   })
 }
@@ -82,7 +82,7 @@ resource "aws_network_acl" "app" {
     protocol   = -1
     rule_no    = 100
     action     = "allow"
-    cidr_block = aws_vpc.this.cidr_block
+    cidr_block = aws_vpc.main_vpc.cidr_block
     from_port  = 0
     to_port    = 0
   }
@@ -98,14 +98,14 @@ resource "aws_network_acl" "app" {
     to_port    = 0
   }
 
-  tags = merge(local.tags_common, {
+  tags = merge(local.tags, {
     Name = "${local.name_prefix}-app-nacl"
   })
 }
 
 # RDS MS SQL NACL
 resource "aws_network_acl" "db" {
-  vpc_id     = aws_vpc.this.id
+  vpc_id     = aws_vpc.main_vpc.id
   subnet_ids = [aws_subnet.db.id]
 
   # Ingress rules
@@ -130,7 +130,7 @@ resource "aws_network_acl" "db" {
     to_port    = 1433
   }
 
-  tags = merge(local.tags_common, {
+  tags = merge(local.tags, {
     Name = "${local.name_prefix}-db-nacl"
   })
 }

@@ -9,7 +9,7 @@ resource "aws_route_table" "db" {
     nat_gateway_id = aws_nat_gateway.nat.id
   }
 
-  tags = merge(var.tags, {
+  tags = merge(local.tags, {
     Name    = "${local.name_prefix}-route_table_db"
     SubTier = "db"
   })
@@ -48,7 +48,7 @@ resource "aws_route_table" "app" {
     nat_gateway_id = aws_nat_gateway.nat.id
   }
 
-  tags = merge(var.tags, {
+  tags = merge(local.tags, {
     Name    = "${local.name_prefix}-route_table_app"
     SubTier = "app"
   })
@@ -56,12 +56,12 @@ resource "aws_route_table" "app" {
 
 resource "aws_subnet" "app" {
   vpc_id            = aws_vpc.main_vpc.id
-  availability_zone = data.aws_availability_zones.available.names[count.index]
+  availability_zone = data.aws_availability_zones.available.names[0]
   cidr_block        = var.subnets_app[0]
 
 
 
-  tags = merge(var.tags, {
+  tags = merge(local.tags, {
     Name    = "${local.name_prefix}-subnet_app"
     Tier    = "Private"
     SubTier = "app"
@@ -72,5 +72,5 @@ resource "aws_subnet" "app" {
 
 resource "aws_route_table_association" "app_route_table" {
   subnet_id      = aws_subnet.app.id
-  route_table_id = aws_route_table.appid
+  route_table_id = aws_route_table.app.id
 }

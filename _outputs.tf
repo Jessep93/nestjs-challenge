@@ -8,6 +8,6 @@ output "loadbalancer_dns_name" {
 # RDS
 output "rds_master_password" {
   description = "RDS master password"
-  value       = local.random_password.rds_password.result
+  value       = random_password.rds_password.result
   sensitive   = true
 }

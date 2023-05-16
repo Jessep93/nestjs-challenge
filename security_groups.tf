@@ -2,7 +2,7 @@
 resource "aws_security_group" "web_sg" {
   name        = "${local.name_prefix}-web-sg"
   description = "Allow HTTP inbound traffic"
-  vpc_id      = aws_vpc.my-vpc.id
+  vpc_id      = aws_vpc.main_vpc.id
 
   ingress {
     description = "HTTP from VPC"
@@ -36,7 +36,7 @@ resource "aws_security_group" "web_sg" {
 resource "aws_security_group" "app_sg" {
   name        = "${local.name_prefix}-app-sg"
   description = "Allows inbound traffic only from Web layer"
-  vpc_id      = aws_vpc.my-vpc.id
+  vpc_id      = aws_vpc.main_vpc.id
 
   ingress {
     description     = "Allow traffic from web (public) layer"
@@ -71,24 +71,24 @@ resource "aws_security_group" "rds_sg" {
   name = "${local.name_prefix}-rds-sg"
 
   description = "Allow traffic from app layer"
-  vpc_id      = var.vpc_id
+  vpc_id      = aws_vpc.main_vpc.id
 
   #DB access
   ingress {
     from_port       = 3306
     to_port         = 3306
     protocol        = "tcp"
-    security_groups = [aws_security_group.app_sg]
+    security_groups = [aws_security_group.app_sg.id]
   }
 
   egress {
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
-    cidr_blocks = var.subnets_web_cidr_blocks
+    cidr_blocks = var.subnets_web
   }
 
-  tags = merge(local.tags_common, {
+  tags = merge(local.tags, {
     Name = "${local.name_prefix}-rds-sg"
   })
 }
