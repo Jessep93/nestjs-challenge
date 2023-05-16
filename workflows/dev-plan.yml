@@ -1,0 +1,39 @@
+name: 'hello world infra - dev plan'
+on : pull_request #Triggers when pr is made. Main branch protected, need to create pr to the main branch. 
+
+jobs: 
+  terraform:
+    name: Plan
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Terraform setup"
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.2.4
+      
+      - name: Terraform init
+        id: init
+        run: terraform init
+        env:
+          TF_WORKSPACE: "dev"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_DEV_ACCESS_KEY_ID }} #stored in github secrets
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_DEV_SECRET_ACCESS_KEY }} #stored in github secrets
+        working-directory: .
+
+      - name: Terraform validate
+        id: validate
+        run: terraform validate
+        env:
+          TF_WORKSPACE: "dev"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_DEV_ACCESS_KEY_ID }} #stored in github secrets
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_DEV_SECRET_ACCESS_KEY }} #stored in github secrets
+        working-directory: .
+
+      - name: Terraform plan
+        id: plan
+        run: terraform plan -var-file="./environments/dev.tfvars" -lock=false
+        env:
+          TF_WORKSPACE: "dev"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_DEV_ACCESS_KEY_ID }} #stored in github secrets
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_DEV_SECRET_ACCESS_KEY }} #stored in github secrets
+        working-directory: .        
