@@ -1,7 +1,7 @@
 #Launch Configuration
 resource "aws_launch_template" "web_server_launch_template" {
   name          = "${local.name_prefix}-launch-template"
-  image_id      = "ami-087ba53385eb3f5a7"
+  image_id      = "ami-0d147324c76e8210a"
   instance_type = var.instance_type
   key_name      = var.key_name
 

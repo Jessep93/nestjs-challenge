@@ -12,7 +12,7 @@ resource "random_password" "rds_password" {
 resource "aws_db_subnet_group" "db_subnet_group" {
   name        = "${local.name_prefix}-rds-subnet-group"
   description = "Allowed subnets for DB instances"
-  subnet_ids  = [aws_subnet.db.id]
+  subnet_ids  = [aws_subnet.db.id,aws_subnet.db2.id]
 
   tags = merge(local.tags, {
     Name = "${local.name_prefix}-rds-subnet-group"

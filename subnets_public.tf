@@ -35,3 +35,23 @@ resource "aws_route_table_association" "web" {
   route_table_id = aws_route_table.public.id
 }
 
+
+# web subnet 2 
+resource "aws_subnet" "web2" {
+  vpc_id            = aws_vpc.main_vpc.id
+  availability_zone = data.aws_availability_zones.available.names[1]
+  cidr_block        = var.subnets_web[1]
+
+  tags = merge(local.tags, {
+    Name    = "${local.name_prefix}-subnet_web2"
+    Tier    = "Public"
+    SubTier = "web2"
+  })
+}
+
+resource "aws_route_table_association" "web2" {
+  count = length(var.subnets_web)
+
+  subnet_id      = aws_subnet.web2.id
+  route_table_id = aws_route_table.public.id
+}

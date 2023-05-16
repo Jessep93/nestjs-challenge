@@ -3,7 +3,7 @@ resource "aws_lb" "web_lb" {
   name            = "${local.name_prefix}-Web-LB"
   internal        = false
   security_groups = [aws_security_group.web_sg.id]
-  subnets         = [aws_subnet.web.id, aws_subnet.web.id]
+  subnets         = [aws_subnet.web.id, aws_subnet.web2.id]
 }
 
 resource "aws_lb_target_group" "web_lb_target_group" {
