@@ -27,7 +27,7 @@ This name can be changed in the _variable.tf.
     - terraform apply -var-file="./environments/dev.tfvars" -lock=false
 any env.tfvars file can be selected to choose which environment you want the infrastructure to be deployed in (only dev values have been set for now)
 
-Method 2: Github actions
+Method 2: Github actions [currently not working] 
 1) Setup AWS_ACCESS_KEY and AWS_SECRET_ACCESS_KEY in the github actions secrets 
 2) Everytime new pr is created, terraform plan is automatically triggered in the github actions - main branch should be protected in real scenario. 
 3) Once Terraform plan is finished, you can view the changes and run the APPLY actions to apply the changes (can make this process automatic if needed)
@@ -37,7 +37,7 @@ Method 2: Github actions
 ## AWS Infrastructure
 1) Modularization of Codes: To improve the management and scalability of the infrastructure, it is recommended to modularize the codebase. This allows for easier reusability and maintainability of the infrastructure components.
 
-2) Implement Highly Available Network Address: For production and staging environments, it is crucial to implement high availability by deploying infrastructure across multiple Availability Zones (AZs). This ensures redundancy and resilience in case of failures.
+2) Implement Highly Available Network Address: For production and staging environments, it is crucial to implement high availability by deploying infrastructure across multiple Availability Zones (AZs). This ensures redundancy and resilience in case of failures. Using modules will be lot more helpful to implement this.
 
 3) CloudWatch Alerts and Notifications: Implement health checks and configure CloudWatch alerts to monitor the infrastructure's health and performance. Integrate the alert notifications with collaboration tools like Slack to facilitate prompt responses to any failures or issues.
 
