@@ -11,7 +11,7 @@ on :
 
 jobs: 
   terraform:
-    name: Apply
+    name: Destroy
     runs-on: ubuntu-latest
     steps:
       - name: checkout-branch
